@@ -10,33 +10,63 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ApiRefreshRouteImport } from './routes/api/refresh'
+import { Route as ApiNewsRouteImport } from './routes/api/news'
+import { Route as ApiHealthRouteImport } from './routes/api/health'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiRefreshRoute = ApiRefreshRouteImport.update({
+  id: '/api/refresh',
+  path: '/api/refresh',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiNewsRoute = ApiNewsRouteImport.update({
+  id: '/api/news',
+  path: '/api/news',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiHealthRoute = ApiHealthRouteImport.update({
+  id: '/api/health',
+  path: '/api/health',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/api/health': typeof ApiHealthRoute
+  '/api/news': typeof ApiNewsRoute
+  '/api/refresh': typeof ApiRefreshRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/api/health': typeof ApiHealthRoute
+  '/api/news': typeof ApiNewsRoute
+  '/api/refresh': typeof ApiRefreshRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/api/health': typeof ApiHealthRoute
+  '/api/news': typeof ApiNewsRoute
+  '/api/refresh': typeof ApiRefreshRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/api/health' | '/api/news' | '/api/refresh'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/api/health' | '/api/news' | '/api/refresh'
+  id: '__root__' | '/' | '/api/health' | '/api/news' | '/api/refresh'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ApiHealthRoute: typeof ApiHealthRoute
+  ApiNewsRoute: typeof ApiNewsRoute
+  ApiRefreshRoute: typeof ApiRefreshRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,21 +78,36 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/refresh': {
+      id: '/api/refresh'
+      path: '/api/refresh'
+      fullPath: '/api/refresh'
+      preLoaderRoute: typeof ApiRefreshRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/news': {
+      id: '/api/news'
+      path: '/api/news'
+      fullPath: '/api/news'
+      preLoaderRoute: typeof ApiNewsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/health': {
+      id: '/api/health'
+      path: '/api/health'
+      fullPath: '/api/health'
+      preLoaderRoute: typeof ApiHealthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ApiHealthRoute: ApiHealthRoute,
+  ApiNewsRoute: ApiNewsRoute,
+  ApiRefreshRoute: ApiRefreshRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { createStart } from '@tanstack/react-start'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-  }
-}
