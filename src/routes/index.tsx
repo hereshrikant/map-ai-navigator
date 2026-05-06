@@ -68,8 +68,6 @@ function Dashboard() {
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
     return articles.filter((a) => {
-      const matchCat = category === "All" || a.category === category;
-      if (!matchCat) return false;
       if (!q) return true;
       return (
         a.title.toLowerCase().includes(q) ||
