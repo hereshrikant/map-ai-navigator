@@ -45,11 +45,11 @@ function Dashboard() {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("All");
 
-  const load = async () => {
+  const load = async (cat: string = category) => {
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch("/api/news");
+      const res = await fetch(`/api/news?category=${encodeURIComponent(cat)}`);
       if (!res.ok) throw new Error("Failed to fetch");
       const data = await res.json();
       setArticles(data.articles ?? []);
@@ -61,8 +61,9 @@ function Dashboard() {
   };
 
   useEffect(() => {
-    load();
-  }, []);
+    load(category);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [category]);
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
