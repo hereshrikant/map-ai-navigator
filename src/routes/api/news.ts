@@ -39,13 +39,18 @@ export const Route = createFileRoute("/api/news")({
         const category = url.searchParams.get("category") || "All";
         const q = encodeURIComponent(CATEGORY_QUERIES[category] || CATEGORY_QUERIES["All"]);
 
+        const filteredSample =
+          category === "All"
+            ? sampleArticles
+            : sampleArticles.filter((a) => a.category === category);
+
         if (!apiKey) {
           return new Response(
             JSON.stringify({
               success: true,
               source: "sample",
-              count: sampleArticles.length,
-              articles: sampleArticles,
+              count: filteredSample.length,
+              articles: filteredSample,
             }),
             { status: 200, headers: cors },
           );
