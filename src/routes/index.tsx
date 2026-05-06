@@ -103,7 +103,7 @@ function Dashboard() {
               className="pl-9 h-11 bg-card"
             />
           </div>
-          <Button onClick={load} disabled={loading} className="h-11 gap-2">
+          <Button onClick={() => load()} disabled={loading} className="h-11 gap-2">
             <RefreshCw className={`h-4 w-4 ${loading ? "animate-spin" : ""}`} />
             Refresh
           </Button>
