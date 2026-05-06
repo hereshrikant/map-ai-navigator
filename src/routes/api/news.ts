@@ -86,8 +86,8 @@ export const Route = createFileRoute("/api/news")({
               success: true,
               source: "sample-fallback",
               error: e instanceof Error ? e.message : "fetch failed",
-              count: sampleArticles.length,
-              articles: sampleArticles,
+              count: filteredSample.length,
+              articles: filteredSample,
             }),
             { status: 200, headers: cors },
           );
